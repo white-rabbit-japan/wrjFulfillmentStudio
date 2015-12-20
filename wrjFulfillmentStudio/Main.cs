@@ -5,6 +5,10 @@ using System.Collections;
 using Microsoft.VisualBasic;
 using System.Diagnostics;
 using System;
+using System.IO;
+using System.Reflection;
+
+
 
 
 namespace wrjFulfillmentStudio
@@ -74,9 +78,9 @@ namespace wrjFulfillmentStudio
             this.mmiExit = new System.Windows.Forms.MenuItem();
             this.mmiData = new System.Windows.Forms.MenuItem();
             this.mmiVariables = new System.Windows.Forms.MenuItem();
+            this.mmiCreateLabel = new System.Windows.Forms.MenuItem();
             this.OpenFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.PictureBox1 = new System.Windows.Forms.PictureBox();
-            this.mmiCreateLabel = new System.Windows.Forms.MenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -149,6 +153,12 @@ namespace wrjFulfillmentStudio
             this.mmiVariables.Text = "Variables";
             this.mmiVariables.Click += new System.EventHandler(this.mmiVariables_Click);
             // 
+            // mmiCreateLabel
+            // 
+            this.mmiCreateLabel.Index = 2;
+            this.mmiCreateLabel.Text = "Create Label";
+            this.mmiCreateLabel.Click += new System.EventHandler(this.mmiCreateLabel_Click_1);
+            // 
             // OpenFileDialog1
             // 
             this.OpenFileDialog1.DefaultExt = "lbl";
@@ -156,18 +166,12 @@ namespace wrjFulfillmentStudio
             // 
             // PictureBox1
             // 
-            this.PictureBox1.Location = new System.Drawing.Point(430, 346);
+            this.PictureBox1.Location = new System.Drawing.Point(209, 167);
             this.PictureBox1.Name = "PictureBox1";
             this.PictureBox1.Size = new System.Drawing.Size(565, 376);
             this.PictureBox1.TabIndex = 0;
             this.PictureBox1.TabStop = false;
             this.PictureBox1.Click += new System.EventHandler(this.PictureBox1_Click);
-            // 
-            // mmiCreateLabel
-            // 
-            this.mmiCreateLabel.Index = 2;
-            this.mmiCreateLabel.Text = "Create Label";
-            this.mmiCreateLabel.Click += new System.EventHandler(this.mmiCreateLabel_Click_1);
             // 
             // frmMainNiceLabelDemo
             // 
@@ -207,15 +211,16 @@ namespace wrjFulfillmentStudio
             OpenFileDialog1.ShowDialog();
             if (OpenFileDialog1.FileName != "")
             {
+               
                 LabelFileName = OpenFileDialog1.FileName;
-
+                MessageBox.Show(LabelFileName);
                 this.Cursor = System.Windows.Forms.Cursors.WaitCursor; //HourGlass
 
                 //Connect to NiceLabel if neccessary
                 Connect();
 
                 //Open label
-                OpenLabel(LabelFileName);
+                OpenLabel();
 
                 this.Cursor = System.Windows.Forms.Cursors.Default; //Default
             }
@@ -275,7 +280,7 @@ namespace wrjFulfillmentStudio
 
         }
 
-        public void OpenLabel(string FileName)
+        public void OpenLabel( )
         {
             try
             {
@@ -287,7 +292,8 @@ namespace wrjFulfillmentStudio
                 CloseLabel();
 
                 //Open label
-                LabelIntf = Nice.LabelOpenEx(LabelFileName);
+   
+                LabelIntf =  Nice.LabelOpenEx(LabelFileName);
                 Text = csFormCaption + " - [" + LabelFileName + "]";
 
                 Console.WriteLine("variables {0}", LabelIntf.Variables.Count);
@@ -388,12 +394,28 @@ namespace wrjFulfillmentStudio
 
         private void mmiCreateLabel_Click_1(object sender, EventArgs e)
         {
+            CloseLabel();
+
             frmNonRegisteredLabelMaker instance = new frmNonRegisteredLabelMaker();
             instance.StartPosition = FormStartPosition.CenterParent;
 
             if (instance.ShowDialog(this) == DialogResult.OK)
             {
-                MessageBox.Show(instance.ParcelId);
+                //MessageBox.Show(instance.ParcelId);
+                var appDir = AppDomain.CurrentDomain.BaseDirectory;
+          
+                string labelTemplateFullFilePath = Path.Combine(appDir, Properties.Settings.Default.nonregisteredLabelTemplate);
+                Console.WriteLine(labelTemplateFullFilePath);
+                LabelFileName = labelTemplateFullFilePath;
+
+                
+                Disconnect();
+                //Connect to NiceLabel if neccessary
+                Connect();
+                
+                OpenLabel();
+
+
             }
             else
             {

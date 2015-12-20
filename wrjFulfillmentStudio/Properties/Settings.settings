@@ -5,5 +5,8 @@
     <Setting Name="parcelIdApiEndpoint" Type="System.String" Scope="User">
       <Value Profile="(Default)">http://www.mocky.io/v2/</Value>
     </Setting>
+    <Setting Name="nonregisteredLabelTemplate" Type="System.String" Scope="User">
+      <Value Profile="(Default)">shopify_non-registered_shipping_label.lbl</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

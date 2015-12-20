@@ -34,5 +34,17 @@ namespace wrjFulfillmentStudio.Properties {
                 this["parcelIdApiEndpoint"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("shopify_non-registered_shipping_label.lbl")]
+        public string nonregisteredLabelTemplate {
+            get {
+                return ((string)(this["nonregisteredLabelTemplate"]));
+            }
+            set {
+                this["nonregisteredLabelTemplate"] = value;
+            }
+        }
     }
 }
