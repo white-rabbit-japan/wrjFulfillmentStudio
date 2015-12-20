@@ -25,7 +25,7 @@ namespace wrjFulfillmentStudio.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("https://mocky.io/v2/")]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://www.mocky.io/v2/")]
         public string parcelIdApiEndpoint {
             get {
                 return ((string)(this["parcelIdApiEndpoint"]));

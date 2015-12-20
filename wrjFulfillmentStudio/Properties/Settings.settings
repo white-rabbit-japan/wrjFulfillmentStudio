@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="parcelIdApiEndpoint" Type="System.String" Scope="User">
-      <Value Profile="(Default)">https://mocky.io/v2/</Value>
+      <Value Profile="(Default)">http://www.mocky.io/v2/</Value>
     </Setting>
   </Settings>
 </SettingsFile>
