@@ -104,6 +104,7 @@
     </Compile>
     <EmbeddedResource Include="Variable.resx" />
     <EmbeddedResource Include="Variables.resx" />
+    <None Include="CN22.lbl" />
     <None Include="labelDataSchema.json" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
