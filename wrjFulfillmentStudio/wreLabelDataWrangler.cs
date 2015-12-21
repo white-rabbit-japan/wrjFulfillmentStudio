@@ -10,43 +10,70 @@ using System.Net;
 
 namespace wrjFulfillmentStudio
 {
-
-    [DataContract]
-    internal class NonregisteredShippingLabel
+    // Type created for JSON at <<root>>
+    [System.Runtime.Serialization.DataContractAttribute()]
+    public partial class NonRegisteredShippingLabel
     {
-        [DataMember]
-        internal string shippedDate;
 
-        [DataMember]
-        internal string packageId;
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string actualWeight;
 
-        [DataMember]
-        internal string actualWeight;
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string shopifyOrderId;
 
-        [DataMember]
-        internal string shipToAddress;
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string shipToAddress;
 
-        [DataMember]
-        internal string shippingMethod;
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string shippedDate;
 
-        [DataMember]
-        internal string shippingType;
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string shippingMethod;
+
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string shippingType;
+
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public CustomsItem[] customsItems;
+
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string customsTotalValue;
+
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string customsType;
     }
+
+    // Type created for JSON at <<root>> --> customsItems
+    [System.Runtime.Serialization.DataContractAttribute(Name = "customsItems")]
+    public partial class CustomsItem
+    {
+
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string description;
+
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string quantity;
+
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string valueUSD;
+    }
+
+
 
 
     class wreLabelDataWrangler
     {
 
- 
+
 
         public MemoryStream getLabelData(string parcelId)
         {
             try
             {
-        
+
                 // http://www.mocky.io/v2/56726743250000450b995b1c
-                // serialize an instance of type NonregisteredShippingLabel to JSON
-                NonregisteredShippingLabel label = new NonregisteredShippingLabel();
+                // serialize an instance of type NonRegisteredShippingLabel to JSON
+                NonRegisteredShippingLabel label = new NonRegisteredShippingLabel();
                 //label.packageId = "SX98765";
                 //label.actualWeight = "4444 GRAMS";
                 //label.shippedDate = "15DEC8";
@@ -55,7 +82,7 @@ namespace wrjFulfillmentStudio
                 //label.shippingType = "SMALL PACKET";
 
                 //MemoryStream stream1 = new MemoryStream();
-                //DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(NonregisteredShippingLabel));
+                //DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(NonRegisteredShippingLabel));
 
                 //ser.WriteObject(stream1, label);
 
@@ -78,29 +105,29 @@ namespace wrjFulfillmentStudio
                 return result;
             }
             catch (Exception ex)
-                {
+            {
                 throw;
             }
 
-          
+
 
         }
 
-        public NonregisteredShippingLabel deserializeJSONLabel(Stream labelStream)
+        public NonRegisteredShippingLabel deserializeJSONLabel(Stream labelStream)
         {
-            NonregisteredShippingLabel result;
-            DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(NonregisteredShippingLabel));
+            NonRegisteredShippingLabel result;
+            DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(NonRegisteredShippingLabel));
             labelStream.Position = 0;
-            result = (NonregisteredShippingLabel)ser.ReadObject(labelStream);
+            result = (NonRegisteredShippingLabel)ser.ReadObject(labelStream);
 
             Console.Write("Deserialized back, got packageid=");
-            Console.Write(result.packageId);
+            Console.Write(result);
             Console.Write(", shipToAddress=");
             Console.WriteLine(result.shipToAddress);
 
             // convert \n to CRLF and make uppercase
             result.shipToAddress = result.shipToAddress.Replace("\n", Environment.NewLine).ToUpper();
-            
+
             return result;
 
             //string[] address = label2.shipToAddress.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None);
@@ -109,7 +136,7 @@ namespace wrjFulfillmentStudio
 
         }
 
-        
+
 
 
     }

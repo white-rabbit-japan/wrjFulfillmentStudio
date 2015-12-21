@@ -1,0 +1,22 @@
+﻿{
+  "actualWeight": "600 GRAMS",
+  "shopifyOrderId": "S9999",
+  "shipToAddress": "Cobbledick\u000a666 Fifth AVENUE\u000a21ST FLOOR\u000aNEW YORK, NY 10022\u000aUSA",
+  "shippedDate": "2015/12/16",
+  "shippingMethod": "SAL",
+  "shippingType": "SMALL PACKET",
+  "customsItems": [
+    {
+      "description": "TOY",
+      "quantity": "2",
+      "valueUSD": "4.00"
+    },
+    {
+      "description": "BOOK",
+      "quantity": "1",
+      "valueUSD": "12.00"
+    }
+  ],
+  "customsTotalValue": "16.00",
+  "customsType": "MERCHANDISE"
+}
