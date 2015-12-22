@@ -46,5 +46,17 @@ namespace wrjFulfillmentStudio.Properties {
                 this["nonregisteredLabelTemplate"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("cn22.lbl")]
+        public string CN22LabelTemplate {
+            get {
+                return ((string)(this["CN22LabelTemplate"]));
+            }
+            set {
+                this["CN22LabelTemplate"] = value;
+            }
+        }
     }
 }

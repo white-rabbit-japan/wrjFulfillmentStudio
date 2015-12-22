@@ -1,22 +1,31 @@
 ﻿{
-  "actualWeight": "600 GRAMS",
-  "shopifyOrderId": "S9999",
-  "shipToAddress": "Cobbledick\u000a666 Fifth AVENUE\u000a21ST FLOOR\u000aNEW YORK, NY 10022\u000aUSA",
-  "shippedDate": "2015/12/16",
-  "shippingMethod": "SAL",
-  "shippingType": "SMALL PACKET",
-  "customsItems": [
-    {
-      "description": "TOY",
-      "quantity": "2",
-      "valueUSD": "4.00"
-    },
-    {
-      "description": "BOOK",
-      "quantity": "1",
-      "valueUSD": "12.00"
-    }
-  ],
-  "customsTotalValue": "16.00",
-  "customsType": "MERCHANDISE"
+  "packageId": "S22741",
+  "shippingInfo": {
+    "actualWeight": "1232 GRAMS",
+    "shipToAddress": "ALFONZO COBBLEDICK\n1243 WOODY DRIVE lot 2323\nCOVINGTON, KY 41042\nUNITED STATES\n34344-34343-443",
+    "shippedDate": "2015/12/22",
+    "shippingMethod": "SAL",
+    "shippingType": "SMALL PACKET"
+  },
+  "customsInfo": {
+    "customsItems": [
+      {
+        "description": "TOY",
+        "value": "USD2.00",
+        "quantity": 3
+      },
+      {
+        "description": "BOOK",
+        "value": "USD10.00",
+        "quantity": 2
+      },
+      {
+        "description": "POWER TOOL",
+        "value": "USD150.00",
+        "quantity": 1
+      }
+    ],
+    "customsTotalValue": "USD182.00",
+    "isMerchandise": true
+  }
 }

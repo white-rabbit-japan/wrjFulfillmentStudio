@@ -10,16 +10,29 @@ using System.Net;
 
 namespace wrjFulfillmentStudio
 {
+
     // Type created for JSON at <<root>>
     [System.Runtime.Serialization.DataContractAttribute()]
     public partial class NonRegisteredShippingLabel
     {
 
         [System.Runtime.Serialization.DataMemberAttribute()]
+        public ShippingInfo shippingInfo;
+
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public CustomsInfo customsInfo;
+    }
+
+    // Type created for JSON at <<root>> --> shippingInfo
+    [System.Runtime.Serialization.DataContractAttribute(Name = "shippingInfo")]
+    public partial class ShippingInfo
+    {
+
+        [System.Runtime.Serialization.DataMemberAttribute()]
         public string actualWeight;
 
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public string shopifyOrderId;
+        public string packageId;
 
         [System.Runtime.Serialization.DataMemberAttribute()]
         public string shipToAddress;
@@ -33,6 +46,13 @@ namespace wrjFulfillmentStudio
         [System.Runtime.Serialization.DataMemberAttribute()]
         public string shippingType;
 
+    }
+
+    // Type created for JSON at <<root>> --> customsInfo
+    [System.Runtime.Serialization.DataContractAttribute(Name = "customsInfo")]
+    public partial class CustomsInfo
+    {
+
         [System.Runtime.Serialization.DataMemberAttribute()]
         public CustomsItem[] customsItems;
 
@@ -40,10 +60,10 @@ namespace wrjFulfillmentStudio
         public string customsTotalValue;
 
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public string customsType;
+        public bool isMerchandise;
     }
 
-    // Type created for JSON at <<root>> --> customsItems
+    // Type created for JSON at <<root>> --> customsInfo --> customsItems
     [System.Runtime.Serialization.DataContractAttribute(Name = "customsItems")]
     public partial class CustomsItem
     {
@@ -52,28 +72,25 @@ namespace wrjFulfillmentStudio
         public string description;
 
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public string quantity;
+        public string value;
 
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public string valueUSD;
+        public int quantity;
     }
-
-
 
 
     class wreLabelDataWrangler
     {
-
-
 
         public MemoryStream getLabelData(string parcelId)
         {
             try
             {
 
-                // http://www.mocky.io/v2/56726743250000450b995b1c
+                // http://www.mocky.io/v2/567798ca0f00006b005007ad
                 // serialize an instance of type NonRegisteredShippingLabel to JSON
                 NonRegisteredShippingLabel label = new NonRegisteredShippingLabel();
+          
                 //label.packageId = "SX98765";
                 //label.actualWeight = "4444 GRAMS";
                 //label.shippedDate = "15DEC8";
@@ -93,7 +110,6 @@ namespace wrjFulfillmentStudio
 
                 //return stream1;
 
-
                 string url = Properties.Settings.Default.parcelIdApiEndpoint + parcelId;
                 var response = new WebClient().DownloadString(url);
 
@@ -101,15 +117,12 @@ namespace wrjFulfillmentStudio
                 byte[] byteArray = Encoding.UTF8.GetBytes(response);
                 MemoryStream result = new MemoryStream(byteArray);
 
-
                 return result;
             }
             catch (Exception ex)
             {
                 throw;
             }
-
-
 
         }
 
@@ -123,10 +136,10 @@ namespace wrjFulfillmentStudio
             Console.Write("Deserialized back, got packageid=");
             Console.Write(result);
             Console.Write(", shipToAddress=");
-            Console.WriteLine(result.shipToAddress);
+            Console.WriteLine(result.shippingInfo.shipToAddress);
 
             // convert \n to CRLF and make uppercase
-            result.shipToAddress = result.shipToAddress.Replace("\n", Environment.NewLine).ToUpper();
+            result.shippingInfo.shipToAddress = result.shippingInfo.shipToAddress.Replace("\n", Environment.NewLine).ToUpper();
 
             return result;
 

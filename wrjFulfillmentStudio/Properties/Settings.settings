@@ -8,5 +8,8 @@
     <Setting Name="nonregisteredLabelTemplate" Type="System.String" Scope="User">
       <Value Profile="(Default)">shopify_non-registered_shipping_label.lbl</Value>
     </Setting>
+    <Setting Name="CN22LabelTemplate" Type="System.String" Scope="User">
+      <Value Profile="(Default)">cn22.lbl</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

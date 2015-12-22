@@ -80,9 +80,9 @@ namespace wrjFulfillmentStudio
             this.mmiData = new System.Windows.Forms.MenuItem();
             this.mmiVariables = new System.Windows.Forms.MenuItem();
             this.mmiTools = new System.Windows.Forms.MenuItem();
+            this.miCreateNonregisteredLabel = new System.Windows.Forms.MenuItem();
             this.OpenFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.PictureBox1 = new System.Windows.Forms.PictureBox();
-            this.miCreateNonregisteredLabel = new System.Windows.Forms.MenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -163,6 +163,12 @@ namespace wrjFulfillmentStudio
             this.mmiTools.Text = "Tools";
             this.mmiTools.Click += new System.EventHandler(this.mmiCreateLabel_Click_1);
             // 
+            // miCreateNonregisteredLabel
+            // 
+            this.miCreateNonregisteredLabel.Index = 0;
+            this.miCreateNonregisteredLabel.Text = "Create Non-registered Shipping Label";
+            this.miCreateNonregisteredLabel.Click += new System.EventHandler(this.miCreateNonregisteredLabel_Click);
+            // 
             // OpenFileDialog1
             // 
             this.OpenFileDialog1.DefaultExt = "lbl";
@@ -170,18 +176,13 @@ namespace wrjFulfillmentStudio
             // 
             // PictureBox1
             // 
-            this.PictureBox1.Location = new System.Drawing.Point(209, 167);
+            this.PictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.PictureBox1.Location = new System.Drawing.Point(0, 0);
             this.PictureBox1.Name = "PictureBox1";
-            this.PictureBox1.Size = new System.Drawing.Size(565, 376);
+            this.PictureBox1.Size = new System.Drawing.Size(996, 723);
             this.PictureBox1.TabIndex = 0;
             this.PictureBox1.TabStop = false;
             this.PictureBox1.Click += new System.EventHandler(this.PictureBox1_Click);
-            // 
-            // miCreateNonregisteredLabel
-            // 
-            this.miCreateNonregisteredLabel.Index = 0;
-            this.miCreateNonregisteredLabel.Text = "Create Non-registered Shipping Label";
-            this.miCreateNonregisteredLabel.Click += new System.EventHandler(this.miCreateNonregisteredLabel_Click);
             // 
             // frmMainNiceLabelDemo
             // 
@@ -230,7 +231,7 @@ namespace wrjFulfillmentStudio
                 Connect();
 
                 //Open label
-                OpenLabel("");
+                //OpenLabel("");
 
                 this.Cursor = System.Windows.Forms.Cursors.Default; //Default
             }
@@ -290,7 +291,94 @@ namespace wrjFulfillmentStudio
 
         }
 
-        public void OpenLabel(string parcelId)
+        enum LabelTypes
+        {
+            NonRegisteredShipping,
+            CNN22
+        }
+
+        private string GetLabelFullFilePath(LabelTypes labelType)
+        {
+            string labelTemplateFileName = "";
+
+            switch (labelType)
+            {
+                case LabelTypes.NonRegisteredShipping:
+                    labelTemplateFileName = Properties.Settings.Default.nonregisteredLabelTemplate;
+                    break;
+
+                case LabelTypes.CNN22:
+                    labelTemplateFileName = Properties.Settings.Default.CN22LabelTemplate;
+                    break;
+            }
+
+            string appDir = AppDomain.CurrentDomain.BaseDirectory;
+
+
+            return Path.Combine(appDir, labelTemplateFileName);
+
+        }
+
+        public void OpenCustomsDeclaration(NonRegisteredShippingLabel labelData)
+        {
+            // CN22Template
+
+            try
+            {
+                this.UseWaitCursor = true;
+
+                //			bool Successful;
+
+                // Close previously opened label
+                CloseLabel();
+
+                //Open label
+
+
+                LabelFileName = GetLabelFullFilePath(LabelTypes.CNN22);
+
+
+                LabelIntf = Nice.LabelOpenEx(LabelFileName);
+                Text = csFormCaption + " - [" + labelData.shippingInfo.packageId + "]";
+
+                Console.WriteLine("variables {0}", LabelIntf.Variables.Count);
+                Console.WriteLine("name {0}", LabelIntf.Variables.Item(0).Name);
+
+
+                LabelIntf.Variables.FindByName("totalValue").SetValue(labelData.customsInfo.customsTotalValue);
+
+
+                //LabelIntf.Variables.FindByName("customers").SetValue(labelData.customsItems)
+
+                int i = 0;
+
+                foreach (CustomsItem ci in labelData.customsInfo.customsItems)
+                {
+                    Console.WriteLine("description {0}, quantity {1}, value {2}", ci.description, ci.quantity, ci.value);
+                    LabelIntf.Variables.FindByName("ciDescription" + (i+1)).SetValue(labelData.customsInfo.customsItems[i].description);
+                    LabelIntf.Variables.FindByName("ciValue" + (i+1)).SetValue(labelData.customsInfo.customsItems[i].value);
+                    LabelIntf.Variables.FindByName("ciQuantity" + (i+1)).SetValue(labelData.customsInfo.customsItems[i].quantity.ToString());
+
+
+                    i++;
+                }
+
+                // Get preview picture
+                GetPreview();
+
+                //Enable Data menu
+                mmiPrint.Enabled = true;
+                mmiData.Enabled = true;
+            }
+            finally
+            {
+                this.UseWaitCursor = false;
+            }
+
+
+        }
+
+        public void OpenNonRegisteredShippingLabel(NonRegisteredShippingLabel labelData)
         {
             try
             {
@@ -303,26 +391,27 @@ namespace wrjFulfillmentStudio
 
                 //Open label
 
+               
+                LabelFileName = GetLabelFullFilePath(LabelTypes.NonRegisteredShipping);
+
                 LabelIntf = Nice.LabelOpenEx(LabelFileName);
-                Text = csFormCaption + " - [" + parcelId + "]";
+                Text = csFormCaption + " - [" + labelData.shippingInfo.packageId + "]";
 
                 Console.WriteLine("variables {0}", LabelIntf.Variables.Count);
                 Console.WriteLine("name {0}", LabelIntf.Variables.Item(0).Name);
 
-                wreLabelDataWrangler dataWrangler = new wreLabelDataWrangler();
-                NonRegisteredShippingLabel labelData = dataWrangler.deserializeJSONLabel(dataWrangler.getLabelData(parcelId));
 
-                LabelIntf.Variables.FindByName("actualWeight").SetValue(labelData.actualWeight);
+                LabelIntf.Variables.FindByName("actualWeight").SetValue(labelData.shippingInfo.actualWeight);
 
-                LabelIntf.Variables.FindByName("shipToAddress").SetValue(labelData.shipToAddress);
-                LabelIntf.Variables.FindByName("shippingMethod").SetValue(labelData.shippingMethod);
-                LabelIntf.Variables.FindByName("shippingMethodType").SetValue(labelData.shippingType);
+                LabelIntf.Variables.FindByName("shipToAddress").SetValue(labelData.shippingInfo.shipToAddress);
+                LabelIntf.Variables.FindByName("shippingMethod").SetValue(labelData.shippingInfo.shippingMethod);
+                LabelIntf.Variables.FindByName("shippingMethodType").SetValue(labelData.shippingInfo.shippingType);
 
                 //LabelIntf.Variables.FindByName("customers").SetValue(labelData.customsItems)
 
-                foreach (CustomsItem ci in labelData.customsItems)
+                foreach (CustomsItem ci in labelData.customsInfo.customsItems)
                 {
-                    Console.WriteLine("description {0}, quantity {1}, value {2}", ci.description, ci.quantity, ci.valueUSD);
+                    Console.WriteLine("description {0}, quantity {1}, value {2}", ci.description, ci.quantity, ci.value);
                 }
 
                 // Get preview picture
@@ -361,6 +450,8 @@ namespace wrjFulfillmentStudio
             frmPrint frmPrint1;
 
             frmPrint1 = new frmPrint(this);
+            Console.WriteLine("Printer name={0}");
+
             frmPrint1.tbPrinter.Text = LabelIntf.PrinterName;
             frmPrint1.Show();
         }
@@ -425,18 +516,19 @@ namespace wrjFulfillmentStudio
             {
                 //MessageBox.Show(instance.ParcelId);
                 string parcelId = instance.ParcelId;
-                var appDir = AppDomain.CurrentDomain.BaseDirectory;
 
-                string labelTemplateFullFilePath = Path.Combine(appDir, Properties.Settings.Default.nonregisteredLabelTemplate);
-                Console.WriteLine(labelTemplateFullFilePath);
-                LabelFileName = labelTemplateFullFilePath;
 
 
                 Disconnect();
                 //Connect to NiceLabel if neccessary
                 Connect();
 
-                OpenLabel(parcelId);
+                wreLabelDataWrangler dataWrangler = new wreLabelDataWrangler();
+                NonRegisteredShippingLabel labelData = dataWrangler.deserializeJSONLabel(dataWrangler.getLabelData(parcelId));
+
+
+                OpenCustomsDeclaration(labelData);
+               // OpenNonRegisteredShippingLabel(labelData);
 
 
             }
