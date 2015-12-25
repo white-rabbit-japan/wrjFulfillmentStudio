@@ -121,7 +121,7 @@ namespace wrjFulfillmentStudio
             }
             catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
 
         }

@@ -450,8 +450,8 @@ namespace wrjFulfillmentStudio
             frmPrint frmPrint1;
 
             frmPrint1 = new frmPrint(this);
-            Console.WriteLine("Printer name={0}");
-
+            Console.WriteLine("Printer name={0}", LabelIntf.PrinterName);
+            
             frmPrint1.tbPrinter.Text = LabelIntf.PrinterName;
             frmPrint1.Show();
         }
@@ -507,37 +507,57 @@ namespace wrjFulfillmentStudio
 
         private void miCreateNonregisteredLabel_Click(object sender, EventArgs e)
         {
-            CloseLabel();
-
             frmNonRegisteredLabelMaker instance = new frmNonRegisteredLabelMaker();
-            instance.StartPosition = FormStartPosition.CenterParent;
 
-            if (instance.ShowDialog(this) == DialogResult.OK)
+
+            try
             {
-                //MessageBox.Show(instance.ParcelId);
-                string parcelId = instance.ParcelId;
+
+                CloseLabel();
+
+                instance.StartPosition = FormStartPosition.CenterParent;
+
+                if (instance.ShowDialog(this) == DialogResult.OK)
+                {
+                    //MessageBox.Show(instance.ParcelId);
+                    string parcelId = instance.ParcelId;
 
 
 
-                Disconnect();
-                //Connect to NiceLabel if neccessary
-                Connect();
+                    Disconnect();
+                    //Connect to NiceLabel if neccessary
+                    Connect();
 
-                wreLabelDataWrangler dataWrangler = new wreLabelDataWrangler();
-                NonRegisteredShippingLabel labelData = dataWrangler.deserializeJSONLabel(dataWrangler.getLabelData(parcelId));
+                    wreLabelDataWrangler dataWrangler = new wreLabelDataWrangler();
+                    NonRegisteredShippingLabel labelData = dataWrangler.deserializeJSONLabel(dataWrangler.getLabelData(parcelId));
 
 
-                OpenCustomsDeclaration(labelData);
-               // OpenNonRegisteredShippingLabel(labelData);
+                    OpenCustomsDeclaration(labelData);
+                    // print customs label
 
+                    // OpenNonRegisteredShippingLabel(labelData);
+                    // print shipping label
+
+
+                }
+                else
+                {
+                   // MessageBox.Show("cancelled");
+                   // do nothing
+                }
 
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show("cancelled");
+                MessageBox.Show(ex.Message);
+                    }
+            finally
+            {
+
+                instance.Dispose();
             }
 
-            instance.Dispose();
+
         }
     }
 
