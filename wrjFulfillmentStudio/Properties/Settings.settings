@@ -2,14 +2,26 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="wrjFulfillmentStudio.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="parcelIdApiEndpoint" Type="System.String" Scope="User">
+    <Setting Name="parcelIdApiEndpoint" Type="System.String" Scope="Application">
       <Value Profile="(Default)">http://www.mocky.io/v2/</Value>
     </Setting>
-    <Setting Name="nonregisteredLabelTemplate" Type="System.String" Scope="User">
+    <Setting Name="nonregisteredLabelTemplate" Type="System.String" Scope="Application">
       <Value Profile="(Default)">shopify_non-registered_shipping_label.lbl</Value>
     </Setting>
-    <Setting Name="CN22LabelTemplate" Type="System.String" Scope="User">
+    <Setting Name="CN22LabelTemplate" Type="System.String" Scope="Application">
       <Value Profile="(Default)">cn22.lbl</Value>
+    </Setting>
+    <Setting Name="ParcelBarcode" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">parcelBarcode.lbl</Value>
+    </Setting>
+    <Setting Name="ParcelBarcodePrinter" Type="System.String" Scope="User">
+      <Value Profile="(Default)">test</Value>
+    </Setting>
+    <Setting Name="CustomsPrinter" Type="System.String" Scope="User">
+      <Value Profile="(Default)">test</Value>
+    </Setting>
+    <Setting Name="ShippingLabelPrinter" Type="System.String" Scope="User">
+      <Value Profile="(Default)">test</Value>
     </Setting>
   </Settings>
 </SettingsFile>

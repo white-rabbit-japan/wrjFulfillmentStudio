@@ -23,39 +23,75 @@ namespace wrjFulfillmentStudio.Properties {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("http://www.mocky.io/v2/")]
         public string parcelIdApiEndpoint {
             get {
                 return ((string)(this["parcelIdApiEndpoint"]));
             }
-            set {
-                this["parcelIdApiEndpoint"] = value;
-            }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("shopify_non-registered_shipping_label.lbl")]
         public string nonregisteredLabelTemplate {
             get {
                 return ((string)(this["nonregisteredLabelTemplate"]));
             }
-            set {
-                this["nonregisteredLabelTemplate"] = value;
-            }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("cn22.lbl")]
         public string CN22LabelTemplate {
             get {
                 return ((string)(this["CN22LabelTemplate"]));
             }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("parcelBarcode.lbl")]
+        public string ParcelBarcode {
+            get {
+                return ((string)(this["ParcelBarcode"]));
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("test")]
+        public string ParcelBarcodePrinter {
+            get {
+                return ((string)(this["ParcelBarcodePrinter"]));
+            }
             set {
-                this["CN22LabelTemplate"] = value;
+                this["ParcelBarcodePrinter"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("test")]
+        public string CustomsPrinter {
+            get {
+                return ((string)(this["CustomsPrinter"]));
+            }
+            set {
+                this["CustomsPrinter"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("test")]
+        public string ShippingLabelPrinter {
+            get {
+                return ((string)(this["ShippingLabelPrinter"]));
+            }
+            set {
+                this["ShippingLabelPrinter"] = value;
             }
         }
     }
