@@ -55,6 +55,7 @@ namespace wrjFulfillmentStudio
         {
             m_parcelId = null;
             this.DialogResult = DialogResult.Cancel;
+            this.Hide();
 
         }
     }

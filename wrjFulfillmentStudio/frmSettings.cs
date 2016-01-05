@@ -71,5 +71,10 @@ namespace wrjFulfillmentStudio
             txtShippingLabelPrinter.Text = Properties.Settings.Default.ShippingLabelPrinter;
 
         }
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+        }
     }
 }

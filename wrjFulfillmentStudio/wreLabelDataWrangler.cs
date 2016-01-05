@@ -7,6 +7,7 @@ using System.ServiceModel;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using System.Net;
+using System.Windows.Forms;
 
 namespace wrjFulfillmentStudio
 {
@@ -119,10 +120,19 @@ namespace wrjFulfillmentStudio
 
                 return result;
             }
+        
             catch (Exception ex)
             {
-                throw ex;
-            }
+                if (ex is WebException )
+                {
+                    MessageBox.Show("Server can't find this page." + Environment.NewLine + ex.Message);
+                    return null;
+                } 
+                else
+                { 
+
+                throw;
+            }}
 
         }
 

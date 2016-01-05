@@ -64,7 +64,6 @@ namespace wrjFulfillmentStudio
         internal PictureBox PictureBox1;
         private MenuItem mmiTools;
         private MenuItem miCreateNonregisteredLabel;
-        private ToolStrip toolStrip1;
         private MenuItem miPrintParcelBarcode;
         private MenuItem menuItem1;
         private MenuItem menuItem2;
@@ -86,11 +85,10 @@ namespace wrjFulfillmentStudio
             this.mmiTools = new System.Windows.Forms.MenuItem();
             this.miCreateNonregisteredLabel = new System.Windows.Forms.MenuItem();
             this.miPrintParcelBarcode = new System.Windows.Forms.MenuItem();
-            this.OpenFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.PictureBox1 = new System.Windows.Forms.PictureBox();
-            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.menuItem1 = new System.Windows.Forms.MenuItem();
             this.menuItem2 = new System.Windows.Forms.MenuItem();
+            this.OpenFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.PictureBox1 = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -167,8 +165,8 @@ namespace wrjFulfillmentStudio
             // 
             this.mmiTools.Index = 2;
             this.mmiTools.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-            this.miCreateNonregisteredLabel,
             this.miPrintParcelBarcode,
+            this.miCreateNonregisteredLabel,
             this.menuItem1,
             this.menuItem2});
             this.mmiTools.Text = "Tools";
@@ -176,37 +174,15 @@ namespace wrjFulfillmentStudio
             // 
             // miCreateNonregisteredLabel
             // 
-            this.miCreateNonregisteredLabel.Index = 0;
+            this.miCreateNonregisteredLabel.Index = 1;
             this.miCreateNonregisteredLabel.Text = "Print Shipping Labels";
             this.miCreateNonregisteredLabel.Click += new System.EventHandler(this.miCreateNonregisteredLabel_Click);
             // 
             // miPrintParcelBarcode
             // 
-            this.miPrintParcelBarcode.Index = 1;
+            this.miPrintParcelBarcode.Index = 0;
             this.miPrintParcelBarcode.Text = "Print Parcel Barcode";
             this.miPrintParcelBarcode.Click += new System.EventHandler(this.miPrintParcelBarcode_Click);
-            // 
-            // OpenFileDialog1
-            // 
-            this.OpenFileDialog1.DefaultExt = "lbl";
-            this.OpenFileDialog1.Filter = "(*.lbl)|*.lbl";
-            // 
-            // PictureBox1
-            // 
-            this.PictureBox1.Location = new System.Drawing.Point(0, 72);
-            this.PictureBox1.Name = "PictureBox1";
-            this.PictureBox1.Size = new System.Drawing.Size(996, 651);
-            this.PictureBox1.TabIndex = 0;
-            this.PictureBox1.TabStop = false;
-            this.PictureBox1.Click += new System.EventHandler(this.PictureBox1_Click);
-            // 
-            // toolStrip1
-            // 
-            this.toolStrip1.Location = new System.Drawing.Point(0, 0);
-            this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(996, 25);
-            this.toolStrip1.TabIndex = 2;
-            this.toolStrip1.Text = "toolStrip1";
             // 
             // menuItem1
             // 
@@ -219,11 +195,24 @@ namespace wrjFulfillmentStudio
             this.menuItem2.Text = "&Settings (Admin only)";
             this.menuItem2.Click += new System.EventHandler(this.menuItem2_Click);
             // 
+            // OpenFileDialog1
+            // 
+            this.OpenFileDialog1.DefaultExt = "lbl";
+            this.OpenFileDialog1.Filter = "(*.lbl)|*.lbl";
+            // 
+            // PictureBox1
+            // 
+            this.PictureBox1.Location = new System.Drawing.Point(52, 24);
+            this.PictureBox1.Name = "PictureBox1";
+            this.PictureBox1.Size = new System.Drawing.Size(864, 658);
+            this.PictureBox1.TabIndex = 0;
+            this.PictureBox1.TabStop = false;
+            this.PictureBox1.Click += new System.EventHandler(this.PictureBox1_Click);
+            // 
             // frmMainNiceLabelDemo
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
             this.ClientSize = new System.Drawing.Size(996, 723);
-            this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.PictureBox1);
             this.IsMdiContainer = true;
             this.Menu = this.mm1;
@@ -234,7 +223,6 @@ namespace wrjFulfillmentStudio
             this.Load += new System.EventHandler(this.frmMainNiceLabelDemo_Load);
             ((System.ComponentModel.ISupportInitialize)(this.PictureBox1)).EndInit();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -318,15 +306,7 @@ namespace wrjFulfillmentStudio
         }
 
 
-        public void CreateNonRegisteredLabel(string parcelId)
-        {
-            // open label
 
-            // get and set variable data
-
-            // render preview
-
-        }
 
         enum LabelTypes
         {
@@ -448,7 +428,7 @@ namespace wrjFulfillmentStudio
                 LabelIntf.Variables.FindByName("barcodetext").SetValue(parcelId);
 
                 // Get preview picture
-                GetPreview();
+                //GetPreview();
 
                 //Enable Data menu
                 mmiPrint.Enabled = true;
@@ -616,9 +596,16 @@ namespace wrjFulfillmentStudio
 
                     OpenCustomsDeclaration(labelData);
                     // print customs label
+                    this.LabelIntf.PrinterName = Properties.Settings.Default.CustomsPrinter;
+                    this.Result = this.LabelIntf.Print(1.ToString());
+             
+              
 
-                    // OpenNonRegisteredShippingLabel(labelData);
+
+                    OpenNonRegisteredShippingLabel(labelData);
                     // print shipping label
+                    this.LabelIntf.PrinterName = Properties.Settings.Default.ShippingLabelPrinter;
+                    this.Result = this.LabelIntf.Print(1.ToString());
 
 
                 }
@@ -662,7 +649,10 @@ namespace wrjFulfillmentStudio
                     Connect();
 
                     OpenParcelBarcodeLbael(parcelId);
-                    // print customs label
+                       // print customs label
+                    this.LabelIntf.PrinterName = Properties.Settings.Default.ParcelBarcodePrinter;
+                    this.Result = this.LabelIntf.Print(1.ToString());
+
 
                 }
                 while (instance.DialogResult == DialogResult.OK);
